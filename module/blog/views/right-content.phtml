@@ -1,0 +1,42 @@
+<h5 class="media-title">
+    <?php _l('categories')?>
+</h5>
+
+<?php foreach ($C->model('admin')->getGenres() as $genre):?>
+    <a data-ajax="true" href="<?php echo url('articles', array('category' => $genre['id']))?>" style="display: inline-block;margin: 5px;">
+        <span class="badge  badge-inverse badge-pill"><?php echo $genre['name']?></span>
+    </a>
+<?php endforeach;?>
+
+<?php $popular = model('blog::blog')->getPopular()?>
+<?php if(count($popular) > 0):?>
+    <h5 class="media-title mt-2">
+        <?php _l('top-articles')?>
+    </h5>
+
+    <div class="card-list">
+        <div class="list">
+            <?php foreach($popular as $blog):?>
+                <div class="media">
+                    <a data-ajax="true" href="<?php echo model('blog::blog')->getUrl($blog)?>">
+                        <img class="mr-3 avatar" src="<?php echo url_img($blog['image'], 200)?>">
+                    </a>
+                    <div class="media-body">
+                        <h5 class="mt-0  wrap">
+                            <a data-ajax="true" href="<?php echo model('blog::blog')->getUrl($blog)?>">
+                                <?php echo $blog['title']?>
+                            </a>
+                        </h5>
+                        <?php _l('created-on')?> <span class="timeago " title="<?php echo date('c', $blog['time']) ?>"><?php echo date('c', $blog['time']) ?></span>
+
+                    </div>
+                </div>
+            <?php endforeach?>
+        </div>
+    </div>
+<?php endif?>
+<?php Hook::getInstance()->fire('global.sidebar')?>
+
+<?php echo config('ad-unit2')?>
+
+<?php echo view('home/side-footer')?>

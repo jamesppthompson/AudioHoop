@@ -1,0 +1,71 @@
+<div class="inner-container">
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="video-box">
+                
+
+                <div class="video-details-container p-2">
+                    <h4><?php echo $blog['title']?></h4>
+                    <hr class="line"/>
+
+                    <div class="clearfix mt-2 mb-2">
+                        <?php
+                        $actionType = 'blog';
+                        $actionId = $blog['id'];
+                        ?>
+                        <div class="float-left">
+                            <div class="actions-container dropdown">
+                                <button  data-toggle="tooltip" title="<?php _l('like')?>" class="btn like-button-<?php echo $actionType?>-<?php echo $actionId?> ajax-action <?php echo ($C->model('track')->hasLiked($actionType, $actionId)) ? 'liked' : null?>" href="<?php echo url('like/item', array('type' => $actionType, 'type_id' => $actionId))?>"><i class="la la-heart"></i></button>
+                                <button
+                                    onclick="return share(<?php echo $blog['id']?>, 'blog')"
+                                    data-toggle="tooltip" title="<?php _l('share')?>" class="btn "><i class="la la-external-link"></i> <?php _l('share')?></button>
+                            </div>
+                        </div>
+                        <div class="float-right hide-mobile-sm">
+                            <ul class="track-stats">
+                                <?php $countLikes = $C->model('track')->countLikes($actionType, $actionId)?>
+                                <li ><a href="javascript:void(0)"  class="like-count-<?php echo $actionType?>-<?php echo $actionId?>" style="<?php echo ($countLikes < 1) ? 'display:none': null?>"><i class="la la-heart-o"></i> <span><?php echo $countLikes?></span></a></li>
+                                <li ><a  href=javascript:void(0)"" style=""><i class="la la-eye"></i> <span><?php echo $blog['views']?></span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <hr class="line"/>
+
+                    <div class="text">
+                        <?php echo html_entity_decode($blog['content'])?>
+                    </div>
+
+                    <hr class="line"/>
+
+
+
+                    <div class="pt-3 pb-3" >
+                        <div style="font-size: 13px;font-weight: 600;">
+                            <?php $genre = model('admin')->findGenre($blog['category'])?>
+                            <?php _l('published-on', array('date' => date('d M Y', $blog['time'])))?>
+                            <?php if($genre):?>
+                                / <?php _l('in')?> <a href="" class="" data-ajax="true"><?php echo $genre['name']?></a>
+                            <?php endif?>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="video-box mt-3 p-3">
+                <h4><?php _l('comments')?> </h4>
+
+                <div class="main-loadmore-container" data-container="comments-video-<?php echo $blog['id']?>">
+                    <?php echo $C->view('track/comment/display', array('form'=> true,'type' => 'blog', 'typeId' => $blog['id'], 'title' => l('what-do-think').' '.$blog['title']));?>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="fixed-left-content">
+                <?php echo  view('blog::right-content')?>
+            </div>
+
+        </div>
+    </div>
+</div>

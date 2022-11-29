@@ -1,0 +1,36 @@
+<hr/>
+<h6><?php _l('radio::live-radio')?></h6>
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('radio::who-can-add-radio')?></label>
+    <div class="col-sm-5">
+        <select name="val[who-can-add-radio]">
+            <option <?php echo (config('who-can-add-radio',1) == 1) ? 'selected' : null?> value="1"><?php _l('all')?></option>
+            <option <?php echo (config('who-can-add-radio',1) == 2) ? 'selected' : null?> value="2"><?php _l('authors')?></option>
+            <option <?php echo (config('who-can-add-radio',1) == 3) ? 'selected' : null?> value="3"><?php _l('pro-authors-only')?></option>
+        </select>
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('radio::live-current-listener-interval')?></label>
+    <div class="col-sm-5">
+        <select name="val[live-current-listener-interval]">
+            <option <?php echo (config('live-current-listener-interval',60) == 0) ? 'selected' : null?> value="0"><?php _l('disable')?></option>
+            <option <?php echo (config('live-current-listener-interval',60) == 30) ? 'selected' : null?> value="30">30 <?php _l('seconds')?></option>
+            <option <?php echo (config('live-current-listener-interval',60) == 60) ? 'selected' : null?> value="60">1 <?php _l('minutes')?></option>
+            <option <?php echo (config('live-current-listener-interval',60) == 120) ? 'selected' : null?> value="60">2 <?php _l('minutes')?></option>
+            <option <?php echo (config('live-current-listener-interval',60) == 300) ? 'selected' : null?> value="60">5 <?php _l('minutes')?></option>
+            <option <?php echo (config('live-current-listener-interval',60) == 600) ? 'selected' : null?> value="60">10 <?php _l('minutes')?></option>
+
+        </select>
+    </div>
+</div>
+
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('radio::radio-list-per-page')?></label>
+    <div class="col-sm-5">
+        <input type="number"  name="val[radio-limit]" class="form-control form-control-sm"  value="<?php echo config('radio-limit', 20)?>">
+    </div>
+</div>

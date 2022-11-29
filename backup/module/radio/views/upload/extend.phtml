@@ -1,0 +1,8 @@
+<?php if(model('radio::radio')->canAddRadio()):?>
+    <div class="col-md-4">
+        <a href="<?php echo ($C->request->input('id')) ? url('radio/add', array('id' => $C->request->input('id'))) : url('radio/add')?>" data-ajax="true" class="each">
+            <i class="la la-play-circle-o colored"></i>
+            <h6><?php _l('radio::live-radio')?></h6>
+        </a>
+    </div>
+<?php endif?>

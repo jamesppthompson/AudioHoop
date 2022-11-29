@@ -1,0 +1,85 @@
+<div class="inner-container">
+    <div class="row">
+
+        <div class="col-md-4 ">
+            <div class="flat-stat clearfix" style="background: #00BCD4;">
+                <div class="left"><i  class="la la-key" style="margin: 0 20px"></i></div>
+                <div class="content">
+                    <h5><?php _l('advert::all-ads')?></h5>
+                    <div class="count"><?php echo model('advert::advert')->countAllAds(true)?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 ">
+            <div class="flat-stat clearfix" style="background:#4CAF50 ;">
+                <div class="left"><i  class="la la-key" style="margin: 0 20px"></i></div>
+                <div class="content">
+                    <h5><?php _l('advert::active-ads')?></h5>
+                    <div class="count"><?php echo model('advert::advert')->countActiveAds(true)?></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 ">
+            <div class="flat-stat clearfix" style="background: #F44336;">
+                <div class="left"><i  class="la la-ban" style="margin: 0 20px"></i></div>
+                <div class="content">
+                    <h5><?php _l('advert::non-active-ads')?></h5>
+                    <div class="count"><?php echo model('advert::advert')->countNonActiveAds(true)?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="inner-container mt-3">
+    <table class="table table-responsive-sm">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col" style="width: 20%"><?php _l('name')?></th>
+            <th scope="col" style="width: 10%"><?php _l('user')?></th>
+            <th scope="col"  style="width: 45%"><?php _l('details')?></th>
+            <th scope="col"  style="width: 10%"><?php _l('status')?></th>
+            <th scope="col"  style="width: 15%"><?php _l('action')?></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach($ads->results() as $ad):$user = model('user')->getUser($ad['userid'])?>
+            <tr>
+                <td><?php echo $ad['ad_slug']?></td>
+                <td>
+                    <a data-ajax="true" href="<?php echo model('user')->profileUrl($user)?>"><img style="width: 20px;height:20px;border-radius:100px" src="<?php echo model('user')->getAvatar($user)?>"/> </a>
+                </td>
+                <td>
+                    <strong><?php _l('type')?>:</strong> <?php echo ($ad['ad_type'] == 1) ? l('advert::image-ads') : l('advert::audio-ads')?> <br/>
+                    <strong><?php _l('advert::pay-type')?>:</strong> <?php echo ($ad['pay_type'] == 1) ? l('click') : l('impression')?><br/>
+
+                    <?php if($ad['ad_type'] == 2): $track = model('track')->findTrack($ad['track_id'])?>
+                        <strong><?php _l('track')?>:</strong> <a target="_blank" href="<?php echo model('track')->trackUrl($track)?>"><?php echo $track['title']?></a>
+                     <?php else:?>
+                        <strong><?php _l('title')?>:</strong> <?php echo $ad['ad_title']?><br/>
+                        <strong><?php _l('description')?>:</strong> <?php echo $ad['ad_desc']?><br/>
+                        <a href="<?php echo url_img($ad['ad_image'], 920)?>" target="_blank"><img src="<?php echo url_img($ad['ad_image'], 600)?>" style="width:200px"/></a>
+                    <?php endif?>
+                </td>
+                <td><span class="badge badge-secondary"><?php echo ($ad['admin_status'] == 0 and $ad['status'] == 1) ? l('active') : l('non-active')?></span></td>
+                <td>
+                    <?php if($ad['status'] == 1):?>
+                        <a data-ajax="true" href="<?php echo url('admin/adverts', array('action' => 'enable', 'id' => $ad['id']))?>" class="btn <?php echo (!$ad['admin_status']) ? 'btn-secondary'  : 'btn-success'?> btn-sm round-sm"><?php echo (!$ad['admin_status']) ? l('disable') : l('enable')?></a>
+                    <?php endif?>
+                    <a  href="<?php echo url('admin/adverts', array('action' => 'delete', 'id' => $ad['id']))?>" class="btn confirm btn-danger btn-sm round-sm"><i class="la la-trash"></i></a>
+
+                </td>
+            </tr>
+        <?php endforeach;?>
+        </tbody>
+    </table>
+    <?php if($ads->total < 1):?>
+        <div class="empty-content">
+            <i class="la la-money"></i>
+            <span><?php _l('no-contents-show')?></span>
+        </div>
+    <?php else:?>
+        <?php echo $ads->links()?>
+    <?php endif?>
+</div>

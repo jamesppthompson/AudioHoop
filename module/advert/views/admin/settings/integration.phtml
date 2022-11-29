@@ -1,0 +1,69 @@
+<hr/>
+<h6><?php _l('advert::advert-wallet')?></h6>
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('advert::enable-audio-ads')?></label>
+    <div class="col-sm-5">
+        <input type="hidden" name="val[enable-audio-ads]" value="0"/>
+        <div class="switch">
+            <input id="cmn-toggle-enable-audio-ads" value="1" name="val[enable-audio-ads]" <?php echo (config('enable-audio-ads', true)) ? 'checked': null?> class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+            <label for="cmn-toggle-enable-audio-ads"></label>
+        </div>
+
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('advert::minimum-amount-topup')?> </label>
+    <div class="col-sm-5">
+        <input type="text"  name="val[minimum-amount-topup]" class="form-control form-control-sm"  value="<?php echo config('minimum-amount-topup', 10)?>">
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('advert::pay-per-click-charge')?> </label>
+    <div class="col-sm-5">
+        <input type="text"  name="val[pay-per-click-charge]" class="form-control form-control-sm"  value="<?php echo config('pay-per-click-charge', 0.7)?>">
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('advert::pay-per-impression-charge')?> </label>
+    <div class="col-sm-5">
+        <input type="text"  name="val[pay-per-impression-charge]" class="form-control form-control-sm"  value="<?php echo config('pay-per-impression-charge', 0.1)?>">
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('advert::who-create-ads')?></label>
+    <div class="col-sm-5">
+        <select name="val[who-create-ads]">
+            <option <?php echo (config('who-create-ads',0) == 0) ? 'selected' : null?> value="0"><?php _l('all-users')?></option>
+            <option <?php echo (config('who-create-ads',0) == 1) ? 'selected' : null?> value="1"><?php _l('premium-users-author')?></option>
+            <option <?php echo (config('who-create-ads',0) == 2) ? 'selected' : null?> value="2"><?php _l('admin-only')?></option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('advert::who-see-ads')?></label>
+    <div class="col-sm-5">
+        <select name="val[who-see-ad]">
+            <option <?php echo (config('who-see-ad',0) == 0) ? 'selected' : null?> value="0"><?php _l('all-users')?></option>
+            <option <?php echo (config('who-see-ad',0) == 1) ? 'selected' : null?> value="1"><?php _l('guest-users')?></option>
+            <option <?php echo (config('who-see-ad',0) == 2) ? 'selected' : null?> value="2"><?php _l('non-prop-guest-users')?></option>
+        </select>
+    </div>
+</div>
+
+<div class="form-group row">
+    <label for="staticEmail" class="col-sm-3 col-form-label"><?php _l('advert::audio-ads-interval')?></label>
+    <div class="col-sm-5">
+        <select name="val[audio-ads-interval]">
+            <option <?php echo (config('audio-ads-interval',5) == 3) ? 'selected' : null?> value="3">3 <?php _l('tracks-played')?></option>
+            <option <?php echo (config('audio-ads-interval',5) == 4) ? 'selected' : null?> value="4">4 <?php _l('tracks-played')?></option>
+            <option <?php echo (config('audio-ads-interval',5) == 5) ? 'selected' : null?> value="5">5 <?php _l('tracks-played')?></option>
+            <option <?php echo (config('audio-ads-interval',5) == 10) ? 'selected' : null?> value="10">10 <?php _l('tracks-played')?></option>
+            <option <?php echo (config('audio-ads-interval',5) == 15) ? 'selected' : null?> value="15">15 <?php _l('tracks-played')?></option>
+        </select>
+    </div>
+</div>

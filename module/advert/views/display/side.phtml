@@ -1,0 +1,18 @@
+<script>
+    function adsSideDeduct(id) {
+        $.ajax({
+            url: buildLink('ads/clicking', [{key: 'id', value: id}])
+        });
+    }
+</script>
+<?php $ad = model('advert::advert')->display('image','sidebar');?>
+<?php if($ad):?>
+   <div class="box mt-3">
+       <h5><?php _l('sponsored')?> <a href="<?php echo url('advertising')?>" data-ajax="true" class="float-right" style="font-size: 12px;position:relative;top:5px"><?php _l('advert::create-ads')?></a> </h5>
+       <a <?php echo ($ad['pay_type'] == 1) ? "onclick='adsSideDeduct(".$ad['id'].")'":null?> target="_blank" class="side-card" href="<?php echo $ad['ad_link']?>">
+           <div class="image" style="background-image: url(<?php echo url_img($ad['ad_image'], 920);?>)"></div>
+           <h6 class="title"><?php echo $ad['ad_title']?></h6>
+           <span class="desc"><?php echo str_limit($ad['ad_desc'], 50)?></span>
+       </a>
+   </div>
+<?php endif?>

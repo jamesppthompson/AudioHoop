@@ -1,0 +1,37 @@
+<div class="inner-container">
+    <div class="row mt-3">
+        <div class="col-md-8">
+            <div class="bar-search-container">
+                <form action="" class="global-search-form" method="get" id="blog-search-form">
+                    <input type="text" name="term" value="<?php echo $C->request->input('term')?>" placeholder="<?php _l('search-articles')?>"/>
+                    <button class="btn btn-secondary"><i class="la la-arrow-right"></i></button>
+                </form>
+            </div>
+            <div
+                data-paginate-url="article/paginate"
+                data-param="<?php echo perfectSerialize(array('type' => $category, 'typeId' => $term))?>"
+                id="blogs-list-container"
+                data-loaded="true" class="blogs-list-container " data-type="<?php echo $category?>" data-type-id="<?php echo $term?>" data-offset="0">
+                <?php $blogs = $C->model('blog::blog')->getBlogs($category, $term, 0)?>
+                    <?php foreach($blogs as $blog):?>
+                        <?php echo $C->view('blog::format', array('blog' => $blog))?>
+                    <?php endforeach;?>
+            </div>
+            <?php if(count($blogs) > config('blogs-list-per-page', 10) - 1):?>
+                <div class="load-more-button-container" id="blogs-<?php echo $category?>-<?php echo $term?>-load-more-container">
+                    <a href=""
+                       data-size="s" data-style="zoom-in"
+                       class="load-more-button  btn btn-outline-dark btn-sm ladda-button"
+                       data-container="blogs-list-container"
+                       id="blogs-list-container-loadmore-button"><?php _l('load-more')?></a>
+                </div>
+            <?php endif?>
+        </div>
+        <div class="col-md-4">
+            <div class="fixed-left-content">
+                <?php echo view('blog::right-content')?>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="inner-container mt-4">
+    <div class="store-title clearfix">
+        <div class="float-left">
+            <?php _l('radio::new-live-radio')?>
+        </div>
+        <div class="float-right">
+            <a href="<?php echo url('radio/all')?>" data-ajax="true"><?php _l('see-all')?> <i class="la la-chevron-right "></i></a>
+        </div>
+    </div>
+
+    <div class="inline-grid">
+        <?php $radios = model('radio::radio')->getRadios('all', '', 0, 15)?>
+
+        <div class="grid-container">
+            <?php foreach($radios as $radio):?>
+                <?php echo view('radio::list/display-grid', array('radio' => $radio, 'type' => 'radio', 'typeId' => ''))?>
+            <?php endforeach;?>
+        </div>
+
+    </div>
+
+
+    <div class="store-title clearfix">
+        <div class="float-left">
+            <?php _l('radio::top-live-stations')?>
+        </div>
+        <div class="float-right">
+            <a href="<?php echo url('radio/top')?>" data-ajax="true"><?php _l('see-all')?> <i class="la la-chevron-right "></i></a>
+        </div>
+    </div>
+
+    <?php $radios = model('radio::radio')->getRadios('top', '', 0, 15)?>
+    <div class="large-grid-container clearfix">
+        <?php $n = 1; foreach($radios as $radio):?>
+            <div class="each">
+                <div class="each-inline-track track-hover-display-container each-track-<?php echo $radio['id']?> track-<?php echo $radio['id']?>" id="track-<?php echo $radio['id']?>">
+                    <?php
+                    $user = $C->model('user')->getUser($radio['userid']);
+                    ?>
+                    <div class="art" style="background-image: url(<?php echo $C->model('radio::radio')->getArt($radio)?>);">
+                        <div class="track-hover-display">
+                            <a href=""
+                               data-id="<?php echo $radio['id']?>"
+                               data-art="<?php echo $C->model('track')->getArt($radio)?>"
+                               data-title="<?php echo str_limit( $radio['title'], 50)?>"
+                               data-link="<?php echo $radio['link']?>"
+                               data-profileLink="<?php echo model('radio::radio')->radioUrl($radio)?>"
+                               data-owner="<?php echo $user['full_name']?>"
+                               data-owner-link="<?php echo $C->model('user')->profileUrl($user)?>"
+                               data-wave=""
+                               data-type="radio"
+                               data-typeid=""
+                               data-wave-colored=""
+                               class="play-button track-play-button track-play-button-<?php echo $radio['id']?>" id="track-play-button-<?php echo $radio['id']?>" ><i class="fa  fa-play"></i></a>
+
+                            <div class="play-controls" data-wave="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="track-content">
+                        <div class="clearfix">
+                            <div class="float-left" style="width: 70%">
+                                <div class="media">
+                                     <div class="track-position mr-3"><?php echo $n?></div>
+                                    <div class="media-body">
+                         <span class="title-info">
+                             <a data-ajax="true" class="user-link "  data-id="<?php echo $user['id']?>" href="<?php echo $C->model('user')->profileUrl($user)?>">
+                                 <?php echo format_output_text($user['full_name'])?>
+                                 <?php echo $C->view('user/badge', array('userid'=> $user['id']))?>
+                             </a>
+                        </span>
+                                        <h6 class="media-heading">
+                                            <a data-ajax="true" href="<?php echo $C->model('radio::radio')->radioUrl($radio)?>">
+                                                <?php echo format_output_text(str_limit($radio['title'], 100))?>
+                                            </a>
+
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php $n++;endforeach;?>
+    </div>
+</div>

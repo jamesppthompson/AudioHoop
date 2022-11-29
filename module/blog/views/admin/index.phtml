@@ -1,0 +1,71 @@
+<div class="inner-container">
+    <div class="title clearfix mt-4">
+        <div class="float-left">
+            <h6><?php _l('manage-blogs')?> <a class="btn btn-primary" href="<?php echo url('admin/blogs/add')?>"><?php _l('add-new-blog')?></a> </h6>
+        </div>
+        <div class="float-right">
+            <form class="form-inline" method="post" >
+                <div style="display: inline-block;position: relative;bottom: 4px;">
+                    <div class="input-group mb-2 mb-sm-0">
+                        <div class="input-group-addon"><i class="la la-search"></i></div>
+                        <input type="text" value="<?php echo $term?>" name="term" class="form-control" id="inlineFormInputGroup" placeholder="<?php _l('search')?>">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary round-sm" style="position: relative;bottom: 4px;margin-left: 4px;"><?php _l('filter')?></button>
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-striped mt-3 table-responsive-sm">
+        <thead>
+        <tr>
+            <th scope="col" style="width: 10%;"><?php _l('id')?></th>
+            <th scope="col" style="width: 20%;"><?php _l('by')?></th>
+            <th scope="col" style="width: 25%;"><?php _l('title')?></th>
+            <th scope="col" style="width: 10%;"><?php _l('category')?></th>
+            <th scope="col" style="width: 10%;"><?php _l('status')?></th>
+            <th scope="col" style="width: 10%;"><?php _l('date')?></th>
+            <th scope="col" style="width: 15%;"><?php _l('action')?></th>
+        </tr>
+        </thead>
+        <tbody>
+            <?php foreach($blogs->results() as $blog): $user = $theUser = model('user')->getUser($blog['userid'])?>
+                <tr>
+                    <td><?php echo $blog['id']?></td>
+                    <td>
+                        <a href="<?php echo $C->model('user')->profileUrl($theUser)?>" data-ajax="true"><img src="<?php echo $C->model('user')->getAvatar($theUser)?>" style="width:20px;height:20px;border-radius:100px"/> <?php echo $theUser['full_name']?></a>
+                    </td>
+                    <td>
+                        <a href="<?php echo model('blog::blog')->getUrl($blog)?>" target="_blank"><?php echo $blog['title']?></a>
+                    </td>
+                    <td>
+                        <?php $category = model('admin')->findGenre($blog['category']);?>
+                        <h5><span class="badge badge-secondary"><?php echo $category['name']?></span></h5>
+                    </td>
+                    <td>
+                        <?php if(!$blog['status']):?>
+                            <h5><span class="badge-success badge"><?php _l('published')?></span></h5>
+                        <?php else:?>
+                            <h5><span class="badge-secondary badge"><?php _l('draft')?></span></h5>
+                        <?php endif?>
+                    </td>
+                    <td><?php echo date('F d, Y', $blog['time'])?></td>
+                    <td>
+                        <a href="<?php echo url('admin/blogs/edit/'.$blog['id'])?>" class="btn btn-outline-secondary btn-sm"><?php _l('edit')?></a>
+                        <a href="<?php echo url('admin/blogs', array('action'=> 'delete', 'id'=> $blog['id']))?>" class="btn btn-outline-danger btn-sm  confirm mtitle" title="<?php _l('delete')?>"><?php _l('delete')?></a>
+
+                    </td>
+                </tr>
+            <?php endforeach;?>
+        </tbody>
+    </table>
+
+    <?php if($blogs->total < 1):?>
+        <div class="empty-content">
+            <i class="la la-money"></i>
+            <span><?php _l('no-contents-show')?></span>
+        </div>
+    <?php else:?>
+        <?php echo $blogs->links()?>
+    <?php endif?>
+</div>

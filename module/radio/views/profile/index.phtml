@@ -1,0 +1,143 @@
+<div class="track-profile   each-track-<?php echo $radio['id']?> track-<?php echo $radio['id']?>">
+    <div id="track-header" data-image="<?php echo $C->model('radio::radio')->getArt($radio, 200)?>" data-bg-set="false" class="">
+        <div class="bg-container"></div>
+        <?php $user = $C->model('user')->getUser($radio['userid'])?>
+        <div class="inner-container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <div class="track-image" style="background-image: url(<?php echo $C->model('radio::radio')->getArt($radio, 600)?>)"></div>
+                        </div>
+                        <div class="float-left track-main-progress-<?php echo config('player-progress-type','bar')?> detail-content <?php echo (config('player-progress-type','bar') == 'bar') ? 'track-bar-progress-type' : null?>">
+                            <div class="media">
+                                <a href=""
+                                   data-id="<?php echo $radio['id']?>"
+                                   data-art="<?php echo $C->model('radio::radio')->getArt($radio)?>"
+                                   data-title="<?php echo format_output_text(str_limit( $radio['title'], 50))?>"
+                                   data-link="<?php echo $radio['link']?>"
+                                   data-profileLink="<?php echo model('radio::radio')->radioUrl($radio)?>"
+                                   data-owner="<?php echo $user['full_name']?>"
+                                   data-owner-link="<?php echo $C->model('user')->profileUrl($user)?>"
+                                   data-wave=""
+                                   data-wave-colored=""
+                                   data-type="radio"
+                                   data-typeid=""
+                                   class="play-button mr-3 play-icon track-play-button-<?php echo $radio['id']?>" id="track-play-button-<?php echo $radio['id']?>" ><i class="fa  fa-play"></i></a>
+                                <div class="media-body detail">
+                                    <h5 class="mt-0 title"><?php echo format_output_text($radio['title'])?></h5>
+
+                                    <?php _l('by')?> <a data-ajax="true" href="<?php echo $C->model('user')->profileUrl($user)?>">
+                                        <span><?php echo format_output_text($user['full_name'])?></span>
+                                        <?php echo $C->view('user/badge', array('userid'=> $user['id']))?>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="play-controls wave-possible-play-control" data-wave="">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="track-footer mb-3">
+                        <div class="inner-contain">
+                            <div class="clearfix">
+                                <div class="float-left">
+                                    <div class="actions-container dropdown ">
+                                        <a class="btn  like-button-radio-<?php echo $radio['id']?> ajax-action <?php echo ($C->model('track')->hasLiked('radio', $radio['id'])) ? 'liked' : null?>" href="<?php echo url('like/item', array('type' => 'radio', 'type_id' => $radio['id']))?>"><i class="la la-heart"></i> <?php _l('like')?></a>
+                                        <?php if($radio['userid'] == $C->model('user')->authId):?>
+                                            <a class="btn " data-ajax="true" href="<?php echo  url('radio/edit', array('id' => $radio['id']))?>"><i class="fa fa-pencil"></i> <?php _l('edit')?></a>
+                                        <?php endif?>
+                                        <button class="btn " onclick="return share(<?php echo $radio['id']?>, 'radio')"><i class="la la-external-link"></i> <?php _l('share')?></button>
+
+                                        <?php Hook::getInstance()->fire('radio.profile.buttons', null, array($radio))?>
+
+                                        <?php Hook::getInstance()->fire('radio.profile.action', null, array($radio))?>
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <?php $countLikes = $C->model('track')->countLikes('radio', $radio['id'])?>
+                                    <ul class="track-stats">
+
+                                        <li ><a href="" class="like-count-track-<?php echo $radio['id']?>" style="<?php echo ($countLikes < 1) ? 'display:none': null?>"><i class="la la-heart-o"></i> <span><?php echo $countLikes?></span></a></li>
+                                        <li ><a href=""  style="<?php echo ($countLikes < 1) ? 'display:none': null?>"><i class="la la-headphones"></i> <span><?php echo model('radio::radio')->countViews($radio['id'])?></span></a></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <?php Hook::getInstance()->fire('radio.details.top', null, array($radio))?>
+                    <div class="track-tags">
+                        <?php $tags = explode(',', $radio['tags']);?>
+                        <?php foreach($tags as $tag):?>
+                            <a class="tag" href="<?php echo url('search', array('term' => str_replace('#', '', $tag)))?>" data-ajax="true">#<?php echo str_replace('#', '', $tag)?></a>
+                        <?php endforeach;?>
+                    </div>
+                    <div class="track-description mt-3">
+                        <?php echo $radio['description']?>
+                    </div>
+                    <?php Hook::getInstance()->fire('radio.details.middle', null, array($radio))?>
+
+                    <?php Hook::getInstance()->fire('radio.details.bottom', null, array($radio))?>
+                    <div class="page-title">
+                        <?php _l('comments')?>
+                    </div>
+                    <div class="main-loadmore-container" data-container="comments-radio-<?php echo $radio['id']?>">
+                        <?php echo $C->view('track/comment/display', array('form'=> true,'type' => 'radio', 'typeId' => $radio['id'], 'title' => l('what-do-think').' '.$radio['title']));?>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="fixed-left-conten mt-3">
+                        <?php Hook::getInstance()->fire('track.side.details', null, array($radio))?>
+
+                        <div class="box radio-listener-<?php echo $radio['id']?>" style="display: none;" >
+                            <h5><?php _l('radio::current-listener')?> - <span class="colored">0</span></h5>
+                        </div>
+                        <div class="inline-card-list">
+                            <div class="clearfix title">
+                                <div class="float-left">
+                                    <div class="">
+                                        <i class="la la-heart"></i> <?php _l('likes')?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <?php $likes = $C->model('track')->getLikes('radio', $radio['id'], 9)?>
+
+                            <ul class="clearfix">
+                                <?php foreach($likes as $user):?>
+                                    <li><a href="<?php echo $C->model('user')->profileUrl($user)?>" data-ajax="true" style="background-image: url(<?php echo $C->model('user')->getAvatar($user, 75)?>)"> </a></li>
+                                <?php endforeach;?>
+                            </ul>
+
+                        </div>
+
+
+
+                        <?php Hook::getInstance()->fire('global.sidebar')?>
+                        <?php echo config('ad-unit2')?>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="inner-container pt-3">
+        <div class="row">
+            <div class="col-md-8">
+
+
+            </div>
+            <div class="col-md-4">
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="profile-menu">
+    <div class="inner-container clearfix">
+        <ul class="nav nav-tabs float-left">
+            <li class="nav-item">
+                <a class="nav-link <?php echo $page == 'overview' ? 'active' : null?>" data-ajax="true" href="<?php echo url('radio')?>" ><?php _l('home')?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $page == 'all' ? 'active' : null?>"  data-ajax="true" href="<?php echo url('radio/all')?>"><?php _l('radio::all-stations')?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo $page == 'top' ? 'active' : null?>"  data-ajax="true" href="<?php echo url('radio/top')?>"><?php _l('radio::top-station')?></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle <?php echo $page == 'category' ? 'active' : null?>"href="" data-toggle="dropdown"><?php _l('categories')?></a>
+                <div class="dropdown-menu">
+                    <?php foreach ($C->model('admin')->getGenres() as $genre):?>
+                        <option value="<?php echo $genre['id']?>"></option>
+                        <a class="dropdown-item" href="<?php echo url('radio/category/'.$genre['id'])?>" data-ajax="true"><?php echo $genre['name']?></a>
+                    <?php endforeach;?>
+                </div>
+            </li>
+
+        </ul>
+
+
+    </div>
+</div>
+
+<?php echo $content?>

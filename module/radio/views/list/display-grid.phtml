@@ -1,0 +1,36 @@
+
+<?php
+$user = $C->model('user')->getUser($radio['userid']);
+$title = $radio['title'];
+$link = model('radio::radio')->radioUrl($radio);
+
+?>
+<div class="each grid each-track-<?php echo $radio['id']?> track-<?php echo $radio['id']?>" id="track-<?php echo $radio['id']?>">
+    <div class="art track-hover-display-container" style="background-image: url(<?php echo model('radio::radio')->getArt($radio);?>)">
+        <div class="play-container track-hover-display">
+            <a href=""
+               data-id="<?php echo $radio['id']?>"
+               data-art="<?php echo $C->model('radio::radio')->getArt($radio)?>"
+               data-title="<?php echo str_limit( $radio['title'], 50)?>"
+               data-link="<?php echo $radio['link']?>"
+               data-profileLink="<?php echo model('radio::radio')->radioUrl($radio)?>"
+               data-owner="<?php echo $user['full_name']?>"
+               data-owner-link="<?php echo $C->model('user')->profileUrl($user)?>"
+               data-wave=""
+               data-type="<?php echo $type?>"
+               data-typeid="<?php echo $typeId?>"
+               data-wave-colored=""
+               class="play-button track-play-button track-play-button-<?php echo $radio['id']?>" id="track-play-button-<?php echo $radio['id']?>" ><i class="fa  fa-play"></i></a>
+            <div class="play-controls" data-wave="">
+            </div>
+        </div>
+    </div>
+    <div class="info">
+        <a href="<?php echo $link?>" data-ajax="true"><h6><b><?php echo $title?></b></h6></a>
+        <a data-ajax="true" class="user-link "  data-id="<?php echo $user['id']?>"  href="<?php echo $C->model('user')->profileUrl($user)?>">
+            <?php echo $user['full_name']?>
+            <?php echo $C->view('user/badge', array('userid'=> $user['id']))?>
+        </a>
+
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="inner-container mt-4">
+    <div class="row">
+        <div class="col-md-5 ">
+            <div class="flat-stat clearfix" style="background: #E9ECEF;">
+                <div class="left">
+                    <div style="width:40px;height:40px;border-radius:100px;margin:25px 30px;background-image: url(<?php echo model('user')->getAvatar()?>);background-position:center;-webkit-background-size: cover;background-size: cover;"></div>
+                </div>
+                <div class="content" style="text-align: left;color: #000;">
+                    <h5 style="font-size: 20px;"><?php echo model('user')->authUser['full_name']?></h5>
+                    <div class="count" style="font-size: 15px;"><?php _l('advert::e-wallet')?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 ">
+            <div class="flat-stat clearfix" style="background: #FF9800;">
+                <div class="left"><i  class="la la-money" style="margin: 0 20px"></i></div>
+                <div class="content">
+                    <h5><?php _l('advert::wallet-balance')?></h5>
+                    <div class="count"><?php echo formatMoney(model('user')->authUser['wallet'])?></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 ">
+            <a class="flat-stat clearfix" data-ajax="true" href="<?php echo url('wallet')?>" style="background: #8AC45D;display: block;text-align: center;padding: 20px 20px;">
+                <span style="text-align: center;font-weight: bold; font-size: 20px;color: #fff;"><?php _l('advert::top-up-wallet')?></span>
+            </a>
+        </div>
+    </div>
+</div>

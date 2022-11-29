@@ -1,0 +1,12 @@
+<?php
+$actionType = 'radio';
+$actionId = $radio['id'];
+?>
+<div class="actions-container dropdown">
+    <button  data-toggle="tooltip" title="<?php _l('like')?>" class="btn like-button-<?php echo $actionType?>-<?php echo $actionId?> ajax-action <?php echo ($C->model('track')->hasLiked($actionType, $actionId)) ? 'liked' : null?>" href="<?php echo url('like/item', array('type' => $actionType, 'type_id' => $actionId))?>"><i class="la la-heart"></i></button>
+
+
+    <button
+            onclick="return share(<?php echo $radio['id']?>, 'radio')"
+            data-toggle="tooltip" title="<?php _l('share')?>" class="btn "><i class="la la-external-link"></i></button>
+</div>

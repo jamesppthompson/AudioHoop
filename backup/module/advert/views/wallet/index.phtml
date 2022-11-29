@@ -1,0 +1,91 @@
+<?php Hook::getInstance()->fire('statistics.dashboard.header')?>
+<div class="profile-menu">
+    <div class="inner-container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link " data-ajax="true" href="<?php echo url('statistics')?>" ><?php _l('statistics')?></a>
+            </li>
+            <?php if(moduleExists('store') and model('user')->isLoggedIn() and model('user')->isAuthor() and model('user')->subscriptionActive()):?>
+                <li class="nav-item">
+                    <a class="nav-link "  data-ajax="true" href="<?php echo url('store/dashboard')?>"><?php _l('my-store')?></a>
+                </li>
+            <?php endif?>
+
+            <?php Hook::getInstance()->fire('statistics.dashboard.tabs')?>
+        </ul>
+
+    </div>
+</div>
+
+<div class="inner-container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h5><?php _l('advert::credit-purchase-history')?></h5>
+
+
+            <table class="table table-responsive-sm">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col" style="width: 10%">#</th>
+                    <th scope="col"  style="width: 10%"><?php _l('by')?></th>
+                    <th scope="col"  style="width: 15%"><?php _l('date')?></th>
+                    <th scope="col"  style="width: 10%"><?php _l('amount')?></th>
+                    <th scope="col"  style="width: 10%"><?php _l('status')?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $transactions = model('advert::advert')->getWalletTransactions()?>
+                <?php foreach($transactions->results() as $transaction): $user = model('user')->getUser($transaction['userid'])?>
+                    <tr>
+                        <td><?php echo $transaction['id']?></td>
+                        <td>
+                            <a href="<?php echo model('user')->profileUrl($user)?>" data-ajax="true"><strong><?php echo $user['username']?></strong></a>
+                        </td>
+
+                        <td>
+                            <?php echo date('m - d - Y', $transaction['time'])?>
+                        </td>
+                        <td>
+                            <?php echo formatMoney($transaction['amount'])?>
+                        </td>
+                        <td>
+                            <span class="badge <?php echo ($transaction['status']) ? 'badge-success' : 'badge-danger'?>"><?php echo ($transaction['status']) ? l('successful') : l('failed')?></span>
+                        </td>
+                    </tr>
+                <?php endforeach?>
+                </tbody>
+            </table>
+            <?php if($transactions->total < 1):?>
+                <div class="empty-content" style="padding:5% 0">
+                    <i class="la la-money"></i>
+                    <span><?php _l('no-contents-show')?></span>
+                </div>
+            <?php else:?>
+                <?php echo $transactions->links()?>
+            <?php endif?>
+        </div>
+        <script>
+            function topup_wallet() {
+                var v = $('#topup-input').val();
+                var m = $('#mimimum-wallet-amount').data('value');
+                var mm = $('#mimimum-wallet-amount').data('error');
+                if (v < 1 || v < m ) return notify(mm, 'error');
+
+                return load_payment_method(v, 'wallet', v);
+            }
+        </script>
+        <div class="col-md-4">
+            <div class="box">
+                <h6><?php _l('advert::top-up-wallet')?></h6>
+
+                <input id="topup-input" style="background-color: #fff;" type="number" autofocus class="form-control" placeholder="<?php _l('amount')?>"/>
+                <div>
+                    <strong><small id="mimimum-wallet-amount" data-error="<?php _l('advert::select-higher-amount-wallet')?>" data-value="<?php echo config('minimum-amount-topup', 10)?>"> <?php _l('advert::wallet-topup-note')?> <?php echo formatMoney(config('minimum-amount-topup', 10))?></small></strong>
+
+                </div>
+
+                <button class="bt btn-primary btn-sm round-sm mt-3" onclick="return topup_wallet()"><?php _l('advert::top-up')?></button>
+            </div>
+        </div>
+    </div>
+</div>

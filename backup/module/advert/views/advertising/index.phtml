@@ -1,0 +1,203 @@
+<div class="inner-container mt-4">
+    <div class="row">
+
+        <div class="col-md-4 ">
+            <div class="flat-stat clearfix" style="background: #FF9800;">
+                <div class="left"><i  class="la la-money" style="margin: 0 20px"></i></div>
+                <div class="content">
+                    <h5><?php _l('advert::wallet-balance')?></h5>
+                    <div class="count"><?php echo formatMoney(model('user')->authUser['wallet'])?></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 ">
+            <div class="flat-stat clearfix" style="background: #F44336;">
+                <div class="left"><i  class="la la-key" style="margin: 0 20px"></i></div>
+                <div class="content">
+                    <h5><?php _l('advert::active-ads')?></h5>
+                    <div class="count"><?php echo model('advert::advert')->countActiveAds()?></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 ">
+            <div class="flat-stat clearfix" style="background: #4CAF50;">
+                <div class="left"><i  class="la la-ban" style="margin: 0 20px"></i></div>
+                <div class="content">
+                    <h5><?php _l('advert::non-active-ads')?></h5>
+                    <div class="count"><?php echo model('advert::advert')->countNonActiveAds()?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="profile-menu">
+    <div class="inner-container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link  active" data-ajax="true" href="<?php echo url('advertising')?>" ><?php _l('advert::advertising')?></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " data-ajax="true" href="<?php echo url('wallet')?>" ><?php _l('advert::my-wallet')?></a>
+            </li>
+        </ul>
+        <div class="actions-container ">
+            <a href="" class="btn "><?php _l('advert::create-ads')?></a>
+        </div>
+    </div>
+</div>
+<div class="inner-container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+
+            <table class="table table-responsive-sm">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col" style="width: 25%"><?php _l('name')?></th>
+                    <th scope="col"  style="width: 20%"><?php _l('type')?></th>
+                    <th scope="col"  style="width: 20%"><?php _l('pay-type')?></th>
+                    <th scope="col"  style="width: 10%"><?php _l('status')?></th>
+                    <th scope="col"  style="width: 25%"><?php _l('action')?></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $adsLists = model('advert::advert')->getMyLists();foreach($adsLists as $ad):?>
+                    <tr>
+                        <td><?php echo $ad['ad_slug']?></td>
+                        <td><?php echo ($ad['ad_type'] == 1) ? l('advert::image-ads') : l('advert::audio-ads')?></td>
+                        <td><?php echo ($ad['pay_type'] == 1) ? l('click') : l('impression')?> </td>
+                        <td><span class="badge badge-secondary"><?php echo ($ad['admin_status'] == 0 and $ad['status'] == 1) ? l('active') : l('non-active')?></span></td>
+                        <td>
+                            <?php if($ad['admin_status'] == 0):?>
+                                <a data-ajax="true" href="<?php echo url('advertising', array('action' => 'enable', 'id' => $ad['id']))?>" class="btn <?php echo ($ad['status']) ? 'btn-secondary'  : 'btn-success'?> btn-sm round-sm"><?php echo ($ad['status']) ? l('disable') : l('enable')?></a>
+                            <?php endif?>
+                            <a  href="<?php echo url('advertising', array('action' => 'delete', 'id' => $ad['id']))?>" class="btn confirm btn-danger btn-sm round-sm"><i class="la la-trash"></i></a>
+                            <a data-ajax="true" href="<?php echo url('advertising', array('id' => $ad['id']))?>" class="btn btn-secondary btn-sm round-sm"><i class="la la-pencil"></i> </a>
+
+                        </td>
+                    </tr>
+                <?php endforeach;?>
+                </tbody>
+            </table>
+            <?php if(count($adsLists) < 1):?>
+                <div class="empty-content" style="padding:5% 0">
+                    <i class="la la-money"></i>
+                    <span><?php _l('no-contents-show')?></span>
+                </div>
+            <?php endif?>
+
+        </div>
+        <script>
+
+            function select_ads_type_form(t) {
+                var s = $(t).val();
+                $('.ads-form').fadeIn();
+                if (s == 1) {
+                    $('.audio-ads-form').hide();
+                    $('.image-ads-form').show();
+                } else {
+                    $('.audio-ads-form').show();
+                    $('.image-ads-form').hide();
+                }
+            }
+        </script>
+        <div class="col-md-4">
+            <div class="box" style="overflow:initial">
+                <h6><?php echo ($ads) ? l('advert::edit-ads') : l('advert::create-ads')?></h6>
+                <form action="<?php echo getFullUrl(true)?>" class="general-form" method="post" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <input  name="val[name]" value="<?php echo ($ads) ? $ads['ad_slug'] : null?>" autofocus class="form-control bg-white" placeholder="<?php _l('advert::ad-reference-title')?>"/>
+                    </div>
+
+                    <?php if(!$ads):?>
+                        <div class="form-group">
+                            <select onchange="return select_ads_type_form(this)" name="val[type]" class="form-control bg-white">
+                                <option><?php _l('advert::select-ads-type')?></option>
+                                <option value="1"><?php _l('advert::image-ads')?></option>
+                                <option value="2"><?php _l('advert::audio-ads')?></option>
+
+                            </select>
+                        </div>
+                    <?php else:?>
+                        <input type="hidden" name="val[type]" value="<?php echo $ads['ads_type']?>"/>
+                    <?php endif?>
+                    <div  class="ads-form <?php echo (!$ads) ? 'hide' : null?>">
+                        <div class="image-ads-form <?php echo (!$ads or $ads['ad_type'] != 1) ? 'hide' : null?>">
+                            <div class="form-group">
+                                <select  name="val[placement]" class="form-control bg-white">
+                                    <option><?php _l('advert::select-ads-placement')?></option>
+                                    <option <?php echo ($ads and $ads['ad_placement'] == 1) ? 'selected' : null?> value="1"><?php _l('sidebar')?></option>
+                                    <option  <?php echo ($ads and $ads['ad_placement'] == 2) ? 'selected' : null?> value="2"><?php _l('banner')?></option>
+
+                                </select>
+                            </div>
+
+                            <?php if(!$ads):?>
+                                <div class="form-group">
+                                    <label><?php _l('advert::ads-image')?></label>
+                                    <input type="file" onchange="validate_file_size(this, 'image')" class=" form-control bg-white" name="img"/>
+                                </div>
+                            <?php endif?>
+
+                            <div class="form-group">
+                                <input value="<?php echo ($ads) ? $ads['ad_title'] : null?>" type="text" name="val[title]" placeholder="<?php _l('title')?>" class="form-control bg-white"/>
+                            </div>
+                            <div class="form-group">
+                                <input  value="<?php echo ($ads) ? $ads['ad_link'] : null?>" type="text" name="val[link]" placeholder="<?php _l('url')?>" class="form-control bg-white"/>
+                            </div>
+                            <div class="form-group">
+                                <textarea  name="val[description]" placeholder="<?php _l('description')?>" rows="3" class="form-control bg-white"><?php echo ($ads) ? $ads['ad_desc'] : null?></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label><?php _l('payment-method')?></label>
+                                <select name="val[pay_type]" class="form-control bg-white">
+                                    <option <?php echo ($ads and $ads['pay_type'] == 1) ? 'selected' : null?>  value="1"><?php _l('advert::payper-click')?> (<?php echo formatMoney(config('pay-per-click-charge', 0.7))?>)</option>
+                                    <option <?php echo ($ads and $ads['pay_type'] == 2) ? 'selected' : null?> value="2"><?php _l('advert::payper-impression')?> (<?php echo formatMoney(config('pay-per-impression-charge', 0.1))?>)</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="audio-ads-form <?php echo (!$ads or $ads['ad_type'] != 2) ? 'hide' : null?>">
+                           <div class="form-group">
+                               <label><?php _l('select-your-track')?></label>
+                               <select  name="val[track]" data-popup="true"  data-url="track/track-tags" class="spotlighttrackinput input-tags-fetch ">
+                                    <?php if($ads):?>
+                                        <?php $track = model('track')->findTrack($ads['track_id'])?>
+                                        <option value="<?php echo $track['id']?>"><?php echo $track['title']?></option>
+                                   <?php endif?>
+                               </select>
+                           </div>
+
+                            <div class="form-group">
+                                <label><?php _l('payment-method')?></label>
+                                <select  class="form-control bg-white">
+                                    <option selected value="2"><?php _l('advert::payper-impression')?> (<?php echo formatMoney(config('pay-per-impression-charge', 0.1))?>)</option>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><?php _l('advert::target-audience')?></label>
+                            <select data-ui-select="true" name="val[country][]" multiple data-popup="true" class="select-input bg-white">
+                                <?php $userCountries = ($ads) ? explode(',', $ads['target']) : array()?>
+                                <option <?php echo (in_array('all', $userCountries)) ? 'selected' : null?> value="all" selected><?php _l('all-countries')?></option>
+
+                                <?php foreach (getCountries() as $country):?>
+                                    <option  <?php echo (in_array($country, $userCountries)) ? 'selected' : null?>  value="<?php echo strtolower($country)?>"><?php echo $country?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+
+
+                        <button data-size="s" data-style="zoom-in" id="ads-form-button" class="bt btn-primary btn-sm round-sm mt-3  ladda-button"><?php _l('publish')?></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

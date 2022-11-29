@@ -1,0 +1,4 @@
+<?php $activeMenu = getController()->activeMenu;?>
+<li class="<?php echo ( $activeMenu == 'articles') ? 'active' : null?>">
+    <a id="articles-menu" class="sub-menu   <?php echo ( $activeMenu == 'articles') ? 'active' : null?> " href="<?php echo url('articles')?>"  data-ajax="true"> <i class="la la-sticky-note-o "></i> <?php _l('articles')?></a>
+</li>

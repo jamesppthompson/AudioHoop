@@ -1,0 +1,4 @@
+<?php $activeMenu = getController()->activeMenu;?>
+<li class="<?php echo ( $activeMenu == 'radios') ? 'active' : null?>">
+    <a id="radios-menu" class="sub-menu  <?php echo ( $activeMenu == 'radio') ? 'active' : null?> " href="<?php echo url('radio')?>"  data-ajax="true"> <i class="la la-play-circle-o"></i> <?php _l('radio::live-radio')?></a>
+</li>

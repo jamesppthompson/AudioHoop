@@ -1,0 +1,58 @@
+<div class="inner-container">
+    <form  action="<?php echo getFullUrl(true)?>" method="post" class="general-form">
+        <div class="row mt-4">
+            <div class="col-md-7">
+                <div class="form-group">
+                    <label><?php _l('title')?></label>
+                    <input required type="text" name="val[title]" value="<?php echo $blog['title']?>" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <label><?php _l('short-description')?></label>
+                    <textarea required name="val[desc]" rows="3" class="form-control"><?php echo $blog['description']?></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label><?php _l('blog-content')?></label>
+                    <textarea required name="val[content]" class="form-control rich-editor" id="blogcontent"  rows="15"><?php echo $blog['content']?></textarea>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="avatar-placeholder mt-4" style="width: 100%;height:170px;border-style:dashed">
+                    <div id="songAvatar" style="background-image:url(<?php echo url_img($blog['image'], 600)?>);display: block  "></div>
+                    <i class="la la-photo"></i>
+                </div>
+
+                <div class="input-picker mb-3">
+                    <button class="btn btn-secondary btn-sm btn-block round-sm"><?php _l('select-image')?></button>
+                    <input id="songAvatar-input"  data-placeholder="#songAvatar" onchange="validate_file_size(this, 'image')" type="file" name="img"/>
+                </div>
+
+
+                <div class="form-group">
+                    <label><?php _l('tags')?><span class="important">*</span></label>
+                    <input required autocomplete="off" type="text" name="val[tags]" value="<?php echo $blog['tags']?>" class=" input-tags" >
+                </div>
+                <div class="form-group ">
+                    <label><?php _l('category')?></label>
+                    <select required data-ui-select="true" class=" select-input" name="val[category]">
+                        <?php foreach ($C->model('admin')->getGenres() as $genre):?>
+                            <option <?php echo ($genre['id'] == $blog['category']) ? 'selected' : null?> value="<?php echo $genre['id']?>"><?php echo $genre['name']?></option>
+                        <?php endforeach;?>
+                    </select>
+                </div>
+
+                <input type="hidden" name="val[status]" value="0"/>
+                <div class="form-group clearfix">
+                    <button data-size="s" style="float: left;" data-style="zoom-in"  id="save-blog" class="btn btn-primary ladda-button" type="submit"><?php _l('save-blog')?></button>
+                    <div class="switch" style="float: left;margin-left: 20px;">
+                        <input id="cmn-toggle-premium-users" value="1"  <?php echo ($blog['status']) ? 'checked' : null?>  name="val[status]" class="cmn-toggle cmn-toggle-round-flat" type="checkbox">
+                        <label for="cmn-toggle-premium-users"></label>
+                    </div>
+                    <label for="staticEmail" class="col-sm-4 col-form-label"><?php _l('save-as-draft')?></label>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

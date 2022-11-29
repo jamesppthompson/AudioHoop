@@ -1,0 +1,28 @@
+<div class="large-media clearfix" >
+    <a  data-ajax="true" href="<?php echo model('blog::blog')->getUrl($blog)?>">
+        <div class="img" style="background-image: url(<?php echo url_img($blog['image'], 600) ?>);"></div>
+    </a>
+    <div class="content">
+        <h6><span class="badge  badge-inverse badge-pill"><?php echo date('F d, Y', $blog['time'])?></span></h6>
+        <a data-ajax="true" href="<?php echo model('blog::blog')->getUrl($blog)?>">
+            <h5 class="title"><?php echo $blog['title']?></h5>
+        </a>
+
+        <p><?php echo str_limit($blog['description'], 100)?></p>
+
+        <div class="media-stat-info clearfix">
+            <div class="float-left">
+                <?php $countComments = $C->model('track')->countComments('blog', $blog['id'])?>
+                <?php $countLikes = $C->model('track')->countLikes('blog', $blog['id'])?>
+                <span style="" class="each"><?php echo $countComments?> <?php _l('comments')?></span>
+                <span style="" class="each"><?php echo $blog['views']?> <?php _l('views')?></span>
+                <span style="" class="each"><?php echo $countLikes?> <?php _l('likes')?></span>
+
+            </div>
+            <div class="float-right">
+                <a href="<?php echo model('blog::blog')->getUrl($blog)?>" data-ajax="true"><?php _l('read-more')?></a>
+            </div>
+        </div>
+
+    </div>
+</div>

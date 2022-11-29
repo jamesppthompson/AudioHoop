@@ -1,0 +1,8 @@
+<div class="each">
+    <form action="<?php echo url('wallet/pay')?>" method="post" class="general-form">
+        <input type="hidden" name="type" value="<?php echo $type?>"/>
+        <input type="hidden" name="typeid" value="<?php echo $typeId?>"/>
+        <input type="hidden" name="price" value="<?php echo $price?>"/>
+        <button class="btn btn-block btn-lg  mt-2 round-sm" style="width:200px;background:#F1F3F4;margin: auto;font-weight: bold"><img style="width:20px" src="<?php echo assetUrl('assets/images/wallet.png')?>"/> <?php _l('advert::pay-with-wallet')?> (<?php echo formatMoney(model('user')->authUser['wallet'])?>)</button>
+    </form>
+</div>

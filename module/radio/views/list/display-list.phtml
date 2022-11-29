@@ -1,0 +1,18 @@
+<div class="each each-video">
+    <a href="<?php echo model('radio::radio')->radioUrl($radio)?>" data-ajax="true">
+        <div class="art" style="background-image: url(<?php echo model('radio::radio')->getArt($radio,600)?>);">
+            <div class="play-container">
+                <span class="play"><i class="la la-play"></i></span>
+            </div>
+        </div>
+    </a>
+    <div class="info">
+        <h5 class="video-title"> <a href="<?php echo model('radio::radio')->radioUrl($radio)?>" data-ajax="true"><b><?php echo $radio['title']?></b></a></h5>
+        <?php $user = model('user')->getUser($radio['userid'])?>
+        <a href="<?php echo model('user')->profileUrl($user)?>"><?php echo $user['full_name']?></a>
+        <div>
+            <?php echo model('radio::radio')->countViews($radio['id'])?> <?php _l('views')?> -
+            <span class="timeago " title="<?php echo date('c', $radio['time']) ?>"><?php echo date('c', $radio['time']) ?></span>
+        </div>
+    </div>
+</div>
